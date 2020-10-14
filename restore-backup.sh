@@ -3,16 +3,24 @@ AWS_SECRET_ACCESS_KEY=''
 BACKUP_NAME=''
 
 PHP_MAJOR_VERSION='7'
-PHP_MINOR_VERSION='4'
+PHP_MINOR_VERSION='2'
 
-sudo apt -y update
-sudo apt -y install mysql-server php php-mysql php-curl wget curl unzip
+sudo apt-get -y update
+sudo apt-get -y install curl \
+                        mysql-server \
+                        php \
+                        php-curl \
+                        php-mbstring \
+                        php-mysql \
+                        php-xml \
+                        unzip \
+                        wget
 
 # Install ioncube loader
 wget -P /tmp https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
 tar xvf /tmp/ioncube_loaders_lin_x86-64.tar.gz -C /opt
 rm -rf /tmp/ioncube_loaders_lin_x86-64.tar.gz
-echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/7.4/apache2/php.ini
+echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/apache2/php.ini
 
 # Install aws cli
 wget -P /tmp "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
