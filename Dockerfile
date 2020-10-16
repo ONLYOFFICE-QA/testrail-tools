@@ -10,4 +10,5 @@ RUN apt-get -y update && \
 RUN bash /root/restore-backup.sh
 EXPOSE 80
 CMD service apache2 start && \
+    service mysql start && \
     bash

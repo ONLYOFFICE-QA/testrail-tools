@@ -1,6 +1,8 @@
 AWS_ACCESS_KEY_ID=''
 AWS_SECRET_ACCESS_KEY=''
 BACKUP_NAME=''
+TESTRAIL_DB_USER=''
+TESTRAIl_DB_PASS=''
 
 PHP_MAJOR_VERSION='7'
 PHP_MINOR_VERSION='2'
@@ -35,4 +37,14 @@ aws s3 cp s3://nct-testrail-backup/$BACKUP_NAME /tmp
 
 # Unpack backup
 tar xvf $BACKUP_NAME
-mv /tmp/var/backups/testrail/ /var/www/html
+mkdir /opt/testrail
+mv /tmp/var/backups/testrail/testrail /var/www/html
+mv /tmp/var/backups/testrail/attachments /opt/testrail/attachments
+mv /tmp/var/backups/testrail/reports /opt/testrail/reports
+
+# Restore database
+service mysql start
+mysql -u root -e 'CREATE DATABASE testrail DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;'
+mysql -u root -e "CREATE USER 'testrail'@'localhost' IDENTIFIED BY '$TESTRAIl_DB_PASS';"
+mysql -u root -e "GRANT ALL ON testrail.* TO 'testrail'@'localhost';"
+gunzip < /tmp/var/backups/testrail/testrail.sql.gz | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
