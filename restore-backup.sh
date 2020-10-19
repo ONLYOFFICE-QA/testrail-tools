@@ -10,6 +10,7 @@ PHP_MINOR_VERSION='2'
 
 sudo apt-get -y update
 sudo apt-get -y install awscli \
+                        cron \
                         curl \
                         mysql-server \
                         php \
@@ -26,6 +27,7 @@ wget -P /tmp https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_
 tar xvf /tmp/ioncube_loaders_lin_x86-64.tar.gz -C /opt
 rm -rf /tmp/ioncube_loaders_lin_x86-64.tar.gz
 echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/apache2/php.ini
+echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/cli/php.ini
 
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
@@ -44,3 +46,6 @@ mysql -u root -e 'CREATE DATABASE testrail DEFAULT CHARACTER SET utf8 COLLATE ut
 mysql -u root -e "CREATE USER 'testrail'@'localhost' IDENTIFIED BY '$TESTRAIl_DB_PASS';"
 mysql -u root -e "GRANT ALL ON testrail.* TO 'testrail'@'localhost';"
 pv $TEMP_FOLDER/var/backups/testrail/testrail.sql.gz | gunzip | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
+
+# Add cron task for background tasks
+echo "* * * * * www-data /usr/bin/php /var/www/html/testrail/task.php" > /etc/cron.d/testrail
