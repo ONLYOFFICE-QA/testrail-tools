@@ -10,8 +10,10 @@ PHP_MINOR_VERSION='2'
 
 sudo apt-get -y update
 sudo apt-get -y install awscli \
+                        certbot \
                         cron \
                         curl \
+                        fail2ban \
                         mysql-server \
                         php \
                         php-curl \
