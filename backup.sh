@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DB_BASE='testrail'
 
 DATE=`date '+%Y-%m-%d-%H-%M-%S'`
@@ -9,7 +11,7 @@ mysqldump --max-allowed-packet=32M $DB_BASE | gzip -c > $BACKUP_DIR/testrail.sql
 cp -rp /var/www/html/testrail/ $BACKUP_DIR/testrail
 cp -rp /opt/testrail/attachments/ $BACKUP_DIR/attachments
 cp -rp /opt/testrail/reports/ $BACKUP_DIR/reports
-tar -zcvf $BACKUP_NAME $BACKUP_DIR
-aws s3 cp $BACKUP_NAME s3://nct-testrail-backup/
-rm $BACKUP_NAME
+tar -zcvf "$BACKUP_NAME" $BACKUP_DIR
+aws s3 cp "$BACKUP_NAME" s3://nct-testrail-backup/
+rm "$BACKUP_NAME"
 rm -rf $BACKUP_DIR
