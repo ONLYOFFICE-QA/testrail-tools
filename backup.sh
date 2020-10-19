@@ -2,7 +2,7 @@
 
 DB_BASE='testrail'
 
-DATE=`date '+%Y-%m-%d-%H-%M-%S'`
+DATE=$(date '+%Y-%m-%d-%H-%M-%S')
 BACKUP_NAME=testrail-backup-$DATE.tar.gz
 BACKUP_DIR=/var/backups/testrail
 
