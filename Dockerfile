@@ -7,8 +7,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ADD . /root
 RUN apt-get -y update && \
     apt-get -y install sudo
-RUN bash /root/restore-backup.sh
 EXPOSE 80
-CMD service apache2 start && \
-    service mysql start && \
+CMD bash /root/restore-backup.sh && \
+    service apache2 start && \
     bash

@@ -15,6 +15,7 @@ sudo apt-get -y install curl \
                         php-mbstring \
                         php-mysql \
                         php-xml \
+                        pv \
                         unzip \
                         wget
 
@@ -47,4 +48,4 @@ service mysql start
 mysql -u root -e 'CREATE DATABASE testrail DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;'
 mysql -u root -e "CREATE USER 'testrail'@'localhost' IDENTIFIED BY '$TESTRAIl_DB_PASS';"
 mysql -u root -e "GRANT ALL ON testrail.* TO 'testrail'@'localhost';"
-gunzip < /tmp/var/backups/testrail/testrail.sql.gz | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
+pv /tmp/var/backups/testrail/testrail.sql.gz | gunzip | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
