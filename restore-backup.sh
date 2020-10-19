@@ -51,3 +51,4 @@ pv $TEMP_FOLDER/var/backups/testrail/testrail.sql.gz | gunzip | mysql -u $TESTRA
 
 # Add cron task for background tasks
 echo "* * * * * www-data /usr/bin/php /var/www/html/testrail/task.php" > /etc/cron.d/testrail
+service apache2 restart
