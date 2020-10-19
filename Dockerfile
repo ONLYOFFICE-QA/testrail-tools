@@ -4,10 +4,10 @@ LABEL maintainer="shockwavenn@gmail.com"
 ENV TZ=Etc/UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-ADD . /root
+COPY . /root
 RUN apt-get -y update && \
-    apt-get -y install sudo
+    apt-get install -y --no-install-recommends sudo && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 EXPOSE 80
-CMD bash /root/restore-backup.sh && \
-    service apache2 start && \
-    bash
+CMD ["entrypoins.sh"]
