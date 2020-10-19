@@ -3,6 +3,7 @@ AWS_SECRET_ACCESS_KEY=''
 BACKUP_NAME=''
 TESTRAIL_DB_USER=''
 TESTRAIl_DB_PASS=''
+TEMP_FOLDER='/tmp'
 
 PHP_MAJOR_VERSION='7'
 PHP_MINOR_VERSION='2'
@@ -28,18 +29,18 @@ echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_
 
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-aws s3 cp s3://nct-testrail-backup/$BACKUP_NAME /tmp
+aws s3 cp s3://nct-testrail-backup/$BACKUP_NAME $TEMP_FOLDER
 
 # Unpack backup
-tar xvf $BACKUP_NAME
+tar xvf $TEMP_FOLDER/$BACKUP_NAME -C $TEMP_FOLDER
 mkdir /opt/testrail
-mv /tmp/var/backups/testrail/testrail /var/www/html
-mv /tmp/var/backups/testrail/attachments /opt/testrail/attachments
-mv /tmp/var/backups/testrail/reports /opt/testrail/reports
+mv $TEMP_FOLDER/var/backups/testrail/testrail /var/www/html
+mv $TEMP_FOLDER/var/backups/testrail/attachments /opt/testrail/attachments
+mv $TEMP_FOLDER/var/backups/testrail/reports /opt/testrail/reports
 
 # Restore database
 service mysql start
 mysql -u root -e 'CREATE DATABASE testrail DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;'
 mysql -u root -e "CREATE USER 'testrail'@'localhost' IDENTIFIED BY '$TESTRAIl_DB_PASS';"
 mysql -u root -e "GRANT ALL ON testrail.* TO 'testrail'@'localhost';"
-pv /tmp/var/backups/testrail/testrail.sql.gz | gunzip | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
+pv $TEMP_FOLDER/var/backups/testrail/testrail.sql.gz | gunzip | mysql -u $TESTRAIL_DB_USER -p$TESTRAIl_DB_PASS testrail
