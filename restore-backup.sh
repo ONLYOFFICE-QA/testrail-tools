@@ -16,6 +16,7 @@ sudo apt-get -y install awscli \
                         cron \
                         curl \
                         fail2ban \
+                        libfontconfig1 \
                         mysql-server \
                         php \
                         php-curl \
