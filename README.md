@@ -23,8 +23,9 @@ apt -y install php7.4 \
 apt -y autoremove
 PHP_MAJOR_VERSION='7'
 PHP_MINOR_VERSION='4'
-echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/apache2/php.ini
-echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" > /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/cli/php.ini
+echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" >> /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/apache2/php.ini
+echo "zend_extension=/opt/ioncube/ioncube_loader_lin_${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}.so" >> /etc/php/${PHP_MAJOR_VERSION}.${PHP_MINOR_VERSION}/cli/php.ini
+a2dismod php7.2
 a2enmod php7.4
 service apache2 restart
 ```
